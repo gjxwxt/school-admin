@@ -60,9 +60,10 @@ const login = (formEl: FormInstance | undefined) => {
 		if (!valid) return;
 		loading.value = true;
 		try {
-			// 1.执行登录接口
+			// 1.执行登录接口,前端传过来的时候就要将密码进行md5加密
 			const { data } = await loginApi({ ...loginForm, password: md5(loginForm.password) });
 			globalStore.setToken(data.access_token);
+			globalStore.setUserInfo({ roles: data.roles });
 
 			// 2.添加动态路由
 			await initDynamicRouter();

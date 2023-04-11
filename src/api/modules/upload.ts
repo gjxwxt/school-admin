@@ -14,3 +14,12 @@ export const uploadImg = (params: FormData) => {
 export const uploadVideo = (params: FormData) => {
 	return http.post<Upload.ResFileUrl>(PORT1 + `/file/upload/video`, params);
 };
+
+// * 文件上传,二进制格式
+export const uploadExcel = params => {
+	return http.post(PORT1 + `/file/upload/excel`, params, {
+		headers: {
+			"Content-Type": "multipart/form-data"
+		}
+	});
+};

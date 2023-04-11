@@ -33,6 +33,9 @@ import "virtual:svg-icons-register";
 // errorHandler
 import errorHandler from "@/utils/errorHandler";
 
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import "dayjs/locale/zh-cn";
+
 const app = createApp(App);
 
 app.config.errorHandler = errorHandler;
@@ -42,4 +45,4 @@ Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(router).use(I18n).use(pinia).use(directives).use(ElementPlus).mount("#app");
+app.use(router).use(I18n).use(pinia).use(directives).use(ElementPlus, { locale: zhCn }).mount("#app");
