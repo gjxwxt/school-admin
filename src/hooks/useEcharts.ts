@@ -1,17 +1,22 @@
 import { onBeforeUnmount, onActivated, onDeactivated } from "vue";
 import { useDebounceFn } from "@vueuse/core";
 import * as echarts from "echarts";
-
+// import elementResizeDetectorMaker from "element-resize-detector";
 /**
  * @description 使用Echarts(只是为了添加图表响应式)
  * @param {Element} myChart Echarts实例(必传)
  * @param {Object} options 绘制Echarts的参数(必传)
  * @return void
  * */
+// const erd = elementResizeDetectorMaker();
+
 export const useEcharts = (myChart: echarts.ECharts, options: echarts.EChartsCoreOption) => {
 	if (options && typeof options === "object") {
-		myChart.setOption(options);
+		myChart.setOption(options, true);
 	}
+	// erd.listenTo(myChart, function () {
+	// 	myChart.resize();
+	// });
 	const echartsResize = useDebounceFn(() => {
 		myChart && myChart.resize();
 	}, 100);

@@ -308,3 +308,60 @@ export function filterEnum(
 	if (type == "tag") return filterData?.tagType ? filterData.tagType : "";
 	return filterData ? filterData[label] : "--";
 }
+
+/**
+ * @description 传入时间戳返回格式化后的时间：yyyy-mm-dd hh:mi:ss
+ * @param {number} time 时间戳
+ * @return string*/
+export function TimeStampTurn(time: number) {
+	if (time !== 0) {
+		let date = new Date(time + 8 * 3600 * 1000); // 增加8小时
+		return date.toJSON().slice(0, 19).replace("T", " ");
+	} else {
+		return "";
+	}
+}
+export const getObjType = obj => {
+	let toString = Object.prototype.toString;
+	let map = {
+		"[object Boolean]": "boolean",
+		"[object Number]": "number",
+		"[object String]": "string",
+		"[object Function]": "function",
+		"[object Array]": "array",
+		"[object Date]": "date",
+		"[object RegExp]": "regExp",
+		"[object Undefined]": "undefined",
+		"[object Null]": "null",
+		"[object Object]": "object"
+	};
+	if (obj instanceof Element) {
+		return "element";
+	}
+	return map[toString.call(obj)];
+};
+/**
+ * 对象深拷贝
+ */
+export const deepClone = data => {
+	let type = getObjType(data);
+	let obj;
+	if (type === "array") {
+		obj = [];
+	} else if (type === "object") {
+		obj = {};
+	} else {
+		//不再具有下一层次
+		return data;
+	}
+	if (type === "array") {
+		for (let i = 0, len = data.length; i < len; i++) {
+			obj.push(deepClone(data[i]));
+		}
+	} else if (type === "object") {
+		for (let key in data) {
+			obj[key] = deepClone(data[key]);
+		}
+	}
+	return obj;
+};

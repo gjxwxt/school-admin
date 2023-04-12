@@ -54,7 +54,6 @@
 				@click="openDrawer('新增', { assemblyTime, weeks: DayOfWeek, campus })"
 				>add</el-button
 			>
-			<input type="file" @change="change" />
 			<el-button size="large" :icon="Plus" color="#409eff" plain>查看本周数据</el-button>
 		</div>
 		<el-table :data="tableData" style="width: 100%" refs="schedule">
@@ -124,17 +123,6 @@ import {
 } from "@/api/modules/schedule";
 import { GlobalStore } from "@/stores";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
-import { read, utils } from "xlsx";
-
-const change = e => {
-	let _file = e.target.files[0];
-	_file.arrayBuffer().then(res => {
-		const wb = read(res);
-		const sheet1 = wb.Sheets.Sheet1;
-		const _data = utils.sheet_to_json(sheet1);
-		console.log(_data);
-	});
-};
 
 const { BUTTONS } = useAuthButtons();
 

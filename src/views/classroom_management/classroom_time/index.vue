@@ -38,6 +38,8 @@
 </template>
 
 <script setup lang="ts" name="accountManage">
+import { deepClone, TimeStampTurn } from "@/utils/util";
+
 let myChart, option;
 import { ref, onMounted } from "vue";
 import { getSchedule, searchCampus } from "@/api/modules/schedule";
@@ -55,7 +57,7 @@ const getTableList = async () => {
 };
 onMounted(() => {
 	myChart = echarts.init(echartsRef.value as HTMLElement);
-	option = options;
+	option = deepClone(options);
 	// 发送请求,然后对数据时间格式进行处理,默认按照当前周进行搜索先
 	getTableList();
 });
@@ -73,20 +75,65 @@ const getCampus = () => {
 };
 // 处理时间戳,1. time传送给编辑页面，2. showTime是time列，3. DayOfWeek代表当前是周几
 let DayOfWeek = ref(1);
+let classList = [];
+let optionsData = ref({});
 const tableDataFormat = () => {
+	option = deepClone(options);
+	classList = [];
+	optionsData.value = {};
+	// 首先拿到classroom的列表
 	tableData.value.forEach(item => {
-		let startTimeTurn = new Date(item.startTime);
-		let endTimeTurn = new Date(item.endTime);
-		let startTime =
-			startTimeTurn.getHours() +
-			":" +
-			(startTimeTurn.getMinutes() < 10 ? `0${startTimeTurn.getMinutes()}` : startTimeTurn.getMinutes());
-		let endTime =
-			endTimeTurn.getHours() + ":" + (endTimeTurn.getMinutes() < 10 ? `0${endTimeTurn.getMinutes()}` : endTimeTurn.getMinutes());
-		item.showTime = `${startTime}  ~  ${endTime}`;
-		item.time = [startTimeTurn, endTimeTurn];
+		if (!classList.includes(item.classroom)) {
+			classList.push(item.classroom);
+			optionsData.value[item.classroom] = [];
+		}
 	});
-	DayOfWeek.value = new Date(tableData.value[0].startTime).getDay();
+	let timeStr = "";
+	// 之后{教室a：[时间正序]，教室b：[时间正序]}
+	tableData.value.forEach(item => {
+		optionsData.value[item.classroom].push(item.endTime);
+		optionsData.value[item.classroom].push(item.startTime);
+		timeStr = TimeStampTurn(optionsData.value[item.classroom][0]).slice(0, 11);
+	});
+	// {教室a：[时间倒叙]，教室b：[时间倒叙]}
+	let maxNumber = 0; // 首先要知道循环多少次，找出最多的项长度是多少
+	for (let i in optionsData.value) {
+		optionsData.value[i] = optionsData.value[i].sort((a, b) => {
+			return b - a;
+		});
+		optionsData.value[i].length >= maxNumber ? (maxNumber = optionsData.value[i].length) : "";
+	}
+	option.yAxis.data = classList;
+	option.xAxis = {
+		type: "time",
+		boundaryGap: false,
+		min: timeStr + "08:00:00",
+		max: timeStr + "23:00:00",
+		axisLine: { onZero: true, show: true }
+	};
+	// 之后for循环形成最终的options,首先知道要形成多少个对象，之后对数据进行填充
+	let target = [];
+	for (let i = 0; i < maxNumber; i++) {
+		let data = [];
+		for (let j in optionsData.value) {
+			data.push(TimeStampTurn(optionsData.value[j][i] || 0) || timeStr + "08:00:00");
+		}
+		target.push({
+			name: i % 2 == 0 ? "结束时间" : "开始时间",
+			type: "bar",
+			stack: "a",
+			itemStyle:
+				i % 2 == 0
+					? {}
+					: {
+							borderColor: "white",
+							color: "white"
+					  },
+			data: data
+		});
+	}
+	option.series = target;
+	// myChart.setOption(option, true);
 	useEcharts(myChart, option);
 };
 
@@ -131,6 +178,12 @@ const searchList = () => {
 		tableData.value = res.data;
 		if (tableData.value.length) {
 			tableDataFormat();
+		} else {
+			classList = [];
+			optionsData.value = {};
+			option = {};
+			// myChart.setOption(options, true);
+			useEcharts(myChart, options);
 		}
 	});
 };
