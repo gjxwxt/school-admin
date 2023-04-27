@@ -45,7 +45,7 @@ onMounted(() => {
 });
 
 const getCampus = () => {
-	searchCampus({ role: globalStore.userInfo.roles[0] }).then(res => {
+	searchCampus({ role: globalStore.userInfo.roles }).then(res => {
 		tableData.value = res.data;
 	});
 };

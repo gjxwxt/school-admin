@@ -3,8 +3,8 @@
 	<el-container class="layout">
 		<el-header>
 			<div class="logo flx-center">
-				<img src="@/assets/images/logo.svg" alt="logo" />
-				<span>Geeker Admin</span>
+				<img src="@/assets/images/logo.png" alt="logo" />
+				<span>GloryLand</span>
 			</div>
 			<el-menu
 				mode="horizontal"

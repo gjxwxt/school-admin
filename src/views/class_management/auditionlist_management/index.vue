@@ -15,10 +15,20 @@
 				v-model="pickWeek"
 				type="week"
 				@change="pickChange"
-				:format="weekStart + ' 至 ' + weekEnd"
+				:format="weekStart ? weekStart + ' 至 ' + weekEnd : '选择周'"
 				value-format="x"
 				placeholder="选择周"
 				size="large"
+			>
+			</el-date-picker>
+			<el-date-picker
+				v-model="pickDay"
+				type="date"
+				placeholder="选择天"
+				@change="pickDayChange"
+				value-format="x"
+				size="large"
+				style="margin-left: 15px"
 			>
 			</el-date-picker>
 			<el-select
@@ -44,7 +54,9 @@
 				/>
 			</el-select>
 			<el-input size="large" v-model="name" placeholder="输入人名进行过滤" clearable style="width: 150px" />
-			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchList()" style="margin: 0 15px">搜索</el-button>
+			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchList('第一页')" style="margin: 0 15px"
+				>搜索</el-button
+			>
 			<el-button
 				size="large"
 				:icon="Plus"
@@ -54,9 +66,15 @@
 				@click="openDrawer('新增', { assemblyTime, weeks: DayOfWeek, campus })"
 				>add</el-button
 			>
-			<el-button size="large" :icon="Plus" color="#409eff" plain>查看本周数据</el-button>
+			<!--			<el-button size="large" :icon="Plus" color="#409eff" plain>查看本周数据</el-button>-->
 		</div>
-		<el-table :data="tableData" style="width: 100%" refs="schedule">
+		<el-table
+			:data="tableData"
+			style="width: 100%"
+			refs="schedule"
+			border
+			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
+		>
 			<el-table-column prop="showTime" fixed="left" label="试听时间" width="170" align="center" />
 			<el-table-column prop="classes" fixed="left" label="试听班级" width="150" align="center" />
 			<el-table-column prop="audition_name" fixed="left" label="名字" width="70" align="center" />
@@ -123,6 +141,7 @@ import {
 } from "@/api/modules/schedule";
 import { GlobalStore } from "@/stores";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
+import { renderTime } from "@/utils/util";
 
 const { BUTTONS } = useAuthButtons();
 
@@ -161,7 +180,6 @@ const tableDataFormat = () => {
 	tableData.value.forEach(item => {
 		let startTimeTurn = new Date(item.startTime);
 		let endTimeTurn = new Date(item.endTime);
-		let createTime = new Date(item.create_time);
 		let startTime =
 			startTimeTurn.getHours() +
 			":" +
@@ -173,7 +191,7 @@ const tableDataFormat = () => {
 		} ${"" + startTime}  ~  ${endTime}`;
 		item.status = item.signed_or_not == "已签单" ? "已签单" : item.visited_or_not == "未到访" ? "未到访" : `已到访`;
 		// item.signed_or_not == "已签单" ? "已签单" : item.visited_or_not == "未到访" ? "未到访" : `已到访：${item.visited_count}次`;
-		item.create_time = `${createTime.getFullYear()}-${createTime.getMonth() + 1}-${createTime.getDate()}`;
+		item.create_time = renderTime(item.create_time);
 	});
 	DayOfWeek.value = new Date(tableData.value[0].startTime).getDay();
 };
@@ -182,6 +200,7 @@ const tableDataFormat = () => {
 let pickWeek = ref();
 let weekStart = ref("");
 let weekEnd = ref("");
+let pickDay = ref(); // 当选择了某一天，显示当天的，将weekStart和weekEnd设为空，当选择了某一周，pickDay设为空
 // 发起搜索时候的时间戳
 let startDay = ref(0);
 let endDay = ref(0);
@@ -189,7 +208,18 @@ let endDay = ref(0);
 let assemblyTime = ref([]);
 // 根据时间戳，找出当前周的周一monday和周天sunday的日期,然后转换成时间戳
 const pickChange = e => {
+	page.value = 1;
+	pickDay.value = "";
 	timeInMonAndSun(e);
+	searchList();
+};
+const pickDayChange = e => {
+	page.value = 1;
+	weekStart.value = "";
+	weekEnd.value = "";
+	pickWeek.value = "";
+	startDay.value = e;
+	endDay.value = e + 86400000;
 	searchList();
 };
 // 传入时间戳,返回该时间戳所在周的周一和周天日期
@@ -218,6 +248,7 @@ let tableData = ref([]);
 let campus = ref("");
 let campusOptions = ref([]);
 const campusChange = () => {
+	page.value = 1;
 	searchList();
 };
 
@@ -229,7 +260,8 @@ let ChoiceStatus = ref("");
 
 // 搜索按钮,拿着校区和startDay和endDay返回相应时间的课表，返回数据格式是7个对象，每个对象就是每一天的具体课表，
 // 然后根据DayOfWeek进行筛选数据，实现分天显示
-const searchList = () => {
+const searchList = (params = "") => {
+	params === "第一页" ? (page.value = 1) : "";
 	searchAuditiontable({
 		startDay: startDay.value,
 		endDay: endDay.value,

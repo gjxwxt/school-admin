@@ -26,9 +26,6 @@
 					</template>
 				</el-upload>
 			</el-form-item>
-			<el-form-item label="数据覆盖 :">
-				<el-switch v-model="isCover" />
-			</el-form-item>
 		</el-form>
 	</el-dialog>
 </template>
@@ -46,8 +43,6 @@ export interface ExcelParameterProps {
 	getTableList?: () => Promise<any>; // 获取表格数据的Api
 }
 
-// 是否覆盖数据
-const isCover = ref(false);
 // 最大文件上传数
 const excelLimit = ref(1);
 // dialog状态
@@ -71,7 +66,6 @@ const downloadTemp = () => {
 const uploadExcel = async (param: any) => {
 	let excelFormData = new FormData();
 	excelFormData.append("file", param.file);
-	excelFormData.append("isCover", isCover.value as unknown as Blob);
 	await parameter.value.importApi!(excelFormData);
 	parameter.value.getTableList && parameter.value.getTableList();
 	dialogVisible.value = false;

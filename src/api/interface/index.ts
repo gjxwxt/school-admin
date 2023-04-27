@@ -19,8 +19,8 @@ export interface ResPage<T> {
 
 // * 分页请求参数
 export interface ReqPage {
-	pageNum: number;
-	pageSize: number;
+	pageNum?: number;
+	pageSize?: number;
 }
 
 // * 文件上传模块
@@ -38,23 +38,79 @@ export namespace Login {
 	}
 	export interface ResLogin {
 		access_token: string;
-		roles: string;
+		role: string;
+		username: string;
+		phone_number: string;
 	}
 	export interface ResAuthButtons {
 		[key: string]: string[];
 	}
+	export interface ReqRegisterForm {
+		username: string;
+		phoneNumber: string;
+		password: string;
+		role: string;
+		campus: string;
+	}
+	export interface ReqSearchUser {
+		username?: string;
+		campus: string;
+	}
 }
 
+// * 学生管理模块
+export namespace Student {
+	export interface StudentFormList {
+		student_name: string;
+		student_age: number;
+		class_id: string;
+		class_name: string;
+		class_hour: number;
+		student_contact: string;
+		student_source: string;
+		campus: string;
+		remarks: string;
+	}
+	export interface searchStudentForm {
+		student_name?: string;
+		class_name?: string;
+		campus: string;
+		page: number;
+	}
+}
+// * 课时管理模块
+export namespace classHour {
+	// class_id, student_id, student_name, type, operate_num, before_class_hour, remarks, operator
+	export interface classHourOperateForm {
+		campus: string;
+		student_id: number;
+		student_name: string;
+		class_id: number;
+		class_name: string;
+		class_hour: number;
+		remarks: string;
+		type: number;
+		operate_num: number;
+		before_class_hour: number;
+		operator: string;
+	}
+	export interface classHourSearchForm {
+		student_id: string;
+		page: number;
+	}
+}
 // * 用户管理模块
 export namespace User {
 	export interface ReqUserParams extends ReqPage {
+		page?: number;
 		username: string;
-		gender: number;
-		idCard: string;
-		email: string;
-		address: string;
-		createTime: string[];
-		status: number;
+		campus?: string;
+		gender?: number;
+		idCard?: string;
+		email?: string;
+		address?: string;
+		createTime?: string[];
+		status?: number;
 	}
 	export interface ResUserList {
 		id: string;

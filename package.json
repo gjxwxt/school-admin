@@ -1,8 +1,8 @@
 {
-	"name": "geeker-admin",
+	"name": "GloryLand-Admin",
 	"private": true,
 	"version": "0.0.7",
-	"description": "Geeker-Admin后台管理系统",
+	"description": "GloryLand-Admin后台管理系统",
 	"author": "SpicyBoy <848130454@qq.com>",
 	"license": "MIT",
 	"scripts": {

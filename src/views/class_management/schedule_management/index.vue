@@ -37,9 +37,20 @@
 			<el-button size="large" :icon="Download" plain @click="upload">批量导入课表</el-button>
 			<el-button size="large" :icon="Download" plain @click="downloadFile">导出本周课表</el-button>
 		</div>
-		<el-table :data="tableData" style="width: 100%" refs="schedule">
+		<el-table
+			:data="tableData"
+			style="width: 100%"
+			refs="schedule"
+			class="table_box"
+			border
+			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
+		>
 			<el-table-column prop="showTime" label="Class Time" width="150" align="center"> </el-table-column>
-			<el-table-column prop="classes" label="Class No." width="150" align="center" />
+			<el-table-column prop="classes" label="Class No." width="150" align="center">
+				<template #default="scope">
+					<el-button type="primary" link @click="detail(scope.row)">{{ scope.row.classes }}</el-button>
+				</template>
+			</el-table-column>
 			<el-table-column prop="teacher1" label="中教" width="150" align="center" />
 			<el-table-column prop="teacher2" label="外教" width="150" align="center" />
 			<el-table-column prop="content" label="Content" width="150" align="center" />
@@ -59,6 +70,7 @@
 						@click="openDrawer('编辑', { assemblyTime, weeks: DayOfWeek, campus, ...scope.row })"
 						>Edit</el-button
 					>
+					<el-button type="primary" link :icon="View" v-if="BUTTONS.operate" @click="classHour(scope.row)">扣课时</el-button>
 					<el-button type="primary" link :icon="Delete" v-if="BUTTONS.delete" @click="deleteAccount(scope.row)">remove</el-button>
 				</template>
 			</el-table-column>
@@ -76,15 +88,17 @@
 		</div>
 		<UserDrawer ref="drawerRef" @submit="searchList()" />
 		<ImportExcel ref="dialogRef" />
+		<OperateClassHour ref="classHourRef" />
 	</div>
 </template>
 
 <script setup lang="ts" name="accountManage">
 import { ref, onMounted } from "vue";
-import { Delete, EditPen, Plus, Download } from "@element-plus/icons-vue";
+import { Delete, EditPen, Plus, Download, View } from "@element-plus/icons-vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import UserDrawer from "./scheduleDrawer.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
+import OperateClassHour from "@/components/DeductClassHour/index.vue";
 import {
 	addSchedule,
 	deleteSchedule,
@@ -100,6 +114,8 @@ import { useAuthButtons } from "@/hooks/useAuthButtons";
 import { ElMessageBox } from "element-plus";
 import { useDownload } from "@/hooks/useDownload";
 import { uploadExcel } from "@/api/modules/upload";
+import { useRouter } from "vue-router";
+import { classHourOperate, getStudentListByClassId } from "@/api/modules/student";
 const { BUTTONS } = useAuthButtons();
 
 const globalStore = GlobalStore();
@@ -229,6 +245,18 @@ const openDrawer = (title: string, rowData: any = {}) => {
 	drawerRef.value.acceptParams(params);
 };
 
+// 扣课时
+const classHourRef = ref();
+const classHour = async data => {
+	let param = {
+		title: "扣课时",
+		params: data.class_id, // 父组件传过来的参数
+		searchApi: getStudentListByClassId, // 查询数据的api
+		submitApi: classHourOperate // 点击确定上传的api
+	};
+	classHourRef.value.acceptParams(param);
+};
+
 // 删除某一行
 const deleteAccount = async params => {
 	await useHandleData(deleteSchedule, { id: [params.id] }, `删除当前课程`);
@@ -246,9 +274,19 @@ const downloadFile = async () => {
 		})
 	);
 };
+
+// 点击详情，跳转路由进入班级详情页，传入参数class_name
+const router = useRouter();
+const detail = params => {
+	let str = params.classes + "&" + params.campus;
+	router.push(`/class_management/student_management/${str}`);
+};
 </script>
 
 <style lang="scss">
+.table_box {
+	margin-bottom: 60px;
+}
 .bottom_box {
 	// margin-top: 50px;
 	position: absolute;

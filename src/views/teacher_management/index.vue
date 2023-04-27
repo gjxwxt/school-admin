@@ -11,9 +11,34 @@
 			>
 				<el-option v-for="item in campusOptions" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
+			<el-select
+				v-model="teacher_category"
+				@change="teacherChange"
+				class="m-2"
+				placeholder="教师类别"
+				size="large"
+				style="margin-right: 15px"
+			>
+				<el-option
+					v-for="item in [
+						{ label: '中教', value: 1 },
+						{ label: '外教', value: 2 }
+					]"
+					:key="item.value"
+					:label="item.label"
+					:value="item.value"
+				/>
+			</el-select>
+			<el-button size="large" :icon="Delete" color="#409eff" plain @click="clear()">清空类别</el-button>
 			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">TeacherAdd</el-button>
 		</div>
-		<el-table :data="tableData" style="width: 100%" refs="schedule">
+		<el-table
+			border
+			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
+			:data="tableData"
+			style="width: 100%"
+			refs="schedule"
+		>
 			<el-table-column prop="teacher_name" label="teacher_name" width="150" align="center" />
 			<el-table-column prop="teacher_gender" label="teacher_gender" align="center" />
 			<el-table-column prop="teacher_category" label="teacher_category" align="center" />
@@ -74,8 +99,21 @@ const getCampus = () => {
 		searchList();
 	});
 };
+// 教师类别
+let teacher_category = ref(null);
+const teacherChange = () => {
+	searchList();
+};
+// 清空类别
+const clear = () => {
+	if (teacher_category.value) {
+		teacher_category.value = undefined;
+		searchList();
+	}
+};
+// 搜索教师信息
 const searchList = () => {
-	searchTeacher({ campus: campus.value }).then(res => {
+	searchTeacher({ campus: campus.value, type: teacher_category.value }).then(res => {
 		tableData.value = res.data;
 	});
 };

@@ -1,6 +1,6 @@
 <template>
 	<div class="card content-box">
-		<div style="padding: 5vh 2vw">
+		<div style="padding: 1vh 2vw">
 			<el-select
 				v-model="campus"
 				@change="campusChange"
@@ -22,7 +22,7 @@
 			>
 			</el-date-picker>
 		</div>
-		<div ref="echartsRef" class="card" style="width: 100%; height: 300px"></div>
+		<div ref="echartsRef" class="card" style="width: 100%; height: 380px"></div>
 		<div class="bottom_box">
 			<ul>
 				<li><el-button @click="changDay(1)" type="primary" :plain="DayOfWeek !== 1" size="large">Mon.</el-button></li>
@@ -48,6 +48,7 @@ import * as echarts from "echarts";
 import { useEcharts } from "@/hooks/useEcharts";
 import { options } from "./options";
 const echartsRef = ref<HTMLElement>();
+3;
 const globalStore = GlobalStore();
 // 获取表格数据,就是拿着选择周周一开始时间戳和结束时间戳发送请求即可
 const getTableList = async () => {
@@ -132,6 +133,7 @@ const tableDataFormat = () => {
 			data: data
 		});
 	}
+	console.log(target);
 	option.series = target;
 	// myChart.setOption(option, true);
 	useEcharts(myChart, option);

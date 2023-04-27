@@ -35,3 +35,18 @@ export const getAuthMenuListApi = () => {
 export const logoutApi = () => {
 	return http.post(PORT1 + `/logout`);
 };
+
+// * 用户注册
+export const registerApi = (params: Login.ReqRegisterForm) => {
+	return http.post(PORT1 + `/register`, params);
+};
+
+// * 搜索用户
+export const searchUserApi = (params: Login.ReqSearchUser) => {
+	return http.post(PORT1 + `/login/searchUser`, params);
+};
+
+// * 更改本账号密码
+export const changePasswordApi = (params: Login.ReqChangePassword) => {
+	return http.post(PORT1 + `/login/changePassword`, params);
+};

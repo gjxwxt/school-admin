@@ -916,7 +916,7 @@
 					"meta": {
 						"icon": "Menu",
 						"title": "Gitee 仓库",
-						"isLink": "https://gitee.com/laramie/Geeker-Admin",
+						"isLink": "https://gitee.com/laramie/GloryLand-Admin",
 						"isHide": false,
 						"isFull": false,
 						"isAffix": false,
@@ -930,7 +930,7 @@
 					"meta": {
 						"icon": "Menu",
 						"title": "GitHub 仓库",
-						"isLink": "https://github.com/HalseySpicy/Geeker-Admin",
+						"isLink": "https://github.com/HalseySpicy/GloryLand-Admin",
 						"isHide": false,
 						"isFull": false,
 						"isAffix": false,

@@ -1,14 +1,14 @@
 <template>
 	<el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" size="large">
 		<el-form-item prop="username">
-			<el-input v-model="loginForm.username" placeholder="用户名：admin / user">
+			<el-input v-model="loginForm.username">
 				<template #prefix>
 					<el-icon class="el-input__icon"><user /></el-icon>
 				</template>
 			</el-input>
 		</el-form-item>
 		<el-form-item prop="password">
-			<el-input type="password" v-model="loginForm.password" placeholder="密码：123456" show-password autocomplete="new-password">
+			<el-input type="password" v-model="loginForm.password" show-password autocomplete="new-password">
 				<template #prefix>
 					<el-icon class="el-input__icon"><lock /></el-icon>
 				</template>
@@ -63,20 +63,22 @@ const login = (formEl: FormInstance | undefined) => {
 			// 1.执行登录接口,前端传过来的时候就要将密码进行md5加密
 			const { data } = await loginApi({ ...loginForm, password: md5(loginForm.password) });
 			globalStore.setToken(data.access_token);
-			globalStore.setUserInfo({ roles: data.roles });
-
+			globalStore.setUserInfo({ roles: data.role, username: data.username, phone_number: data.phone_number });
+			globalStore.setUsername(data.username);
 			// 2.添加动态路由
 			await initDynamicRouter();
 
 			// 3.清空 tabs、keepAlive 保留的数据
-			tabsStore.closeMultipleTab();
-			keepAlive.setKeepAliveName();
+			await tabsStore.closeMultipleTab();
+			await keepAlive.setKeepAliveName();
 
 			// 4.跳转到首页
-			router.push(HOME_URL);
+			setTimeout(() => {
+				router.push(HOME_URL);
+			}, 500);
 			ElNotification({
 				title: getTimeState(),
-				message: "欢迎登录 Geeker-Admin",
+				message: "欢迎登录 GloryLand-Admin",
 				type: "success",
 				duration: 3000
 			});

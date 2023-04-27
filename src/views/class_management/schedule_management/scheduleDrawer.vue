@@ -20,7 +20,7 @@
 				>
 				</el-time-picker>
 			</el-form-item>
-			<el-form-item label="Class No.">
+			<el-form-item label="Class No." prop="classes">
 				<el-select v-model="drawerProps.rowData.classes" placeholder="Please fill in Class No." @change="classSure">
 					<el-option v-for="item in classOptions" :key="item.value" :label="item.label" :value="item.value" />
 				</el-select>
@@ -69,13 +69,8 @@ import { ElMessage, FormInstance } from "element-plus";
 import { searchClassName, searchClassRoom, searchTeacherByCategory } from "@/api/modules/schedule";
 
 const rules = reactive({
-	avatar: [{ required: true, message: "请上传用户头像" }],
-	photo: [{ required: true, message: "请上传用户照片" }],
-	username: [{ required: true, message: "请填写用户姓名" }],
-	gender: [{ required: true, message: "请选择性别" }],
-	idCard: [{ required: true, message: "请填写身份证号" }],
-	email: [{ required: true, message: "请填写邮箱" }],
-	address: [{ required: true, message: "请填写居住地址" }]
+	classes: [{ required: true, message: "请填写班级" }],
+	classroom: [{ required: true, message: "请填写教室" }]
 });
 
 interface DrawerProps {
@@ -107,6 +102,7 @@ const classSure = e => {
 	});
 	drawerProps.value.rowData.teacher1 = res.teacher1;
 	drawerProps.value.rowData.teacher2 = res.teacher2;
+	drawerProps.value.rowData.class_id = res.class_id;
 };
 
 // 接收父组件传过来的参数
@@ -122,7 +118,8 @@ const acceptParams = (params: DrawerProps): void => {
 				value: item.class_name,
 				label: item.class_name,
 				teacher1: item.teacher1_name,
-				teacher2: item.teacher2_name
+				teacher2: item.teacher2_name,
+				class_id: item.class_id
 			});
 		});
 	});

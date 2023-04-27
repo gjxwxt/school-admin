@@ -7,8 +7,8 @@
 			</div>
 			<div class="login-form">
 				<div class="login-logo">
-					<img class="login-icon" src="@/assets/images/logo.svg" alt="" />
-					<h2 class="logo-text">Geeker-Admin</h2>
+					<img class="login-icon" src="@/assets/images/logo.png" alt="" />
+					<h2 class="logo-text">GloryLand-Admin</h2>
 				</div>
 				<LoginForm />
 			</div>

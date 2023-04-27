@@ -15,7 +15,13 @@
 			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchClassByName">Search</el-button>
 			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">ClassAdd</el-button>
 		</div>
-		<el-table :data="tableData" style="width: 100%" refs="schedule">
+		<el-table
+			:data="tableData"
+			style="width: 100%"
+			refs="schedule"
+			border
+			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
+		>
 			<el-table-column prop="class_name" label="class_name" width="150" align="center" />
 			<el-table-column prop="teacher1_name" label="中教" align="center" />
 			<el-table-column prop="teacher1_contact" label="中教联系方式" align="center" />
@@ -23,6 +29,11 @@
 			<el-table-column prop="teacher2_contact" label="外教联系方式" align="center" />
 			<el-table-column prop="campus" label="campus" align="center" />
 			<el-table-column prop="others" label="others" align="center" />
+			<el-table-column fixed="right" label="班级详情" width="150" align="center">
+				<template #default="scope">
+					<el-button type="primary" link :icon="View" @click="detail(scope.row)">详情</el-button>
+				</template>
+			</el-table-column>
 			<el-table-column fixed="right" label="操作" width="150" align="center">
 				<template #default="scope">
 					<el-button
@@ -45,13 +56,14 @@
 /*详细信息teacher_id，姓名teacher_name， 性别teacher_gender，教师类别（分为中教和外教）teacher_category，
 联系方式teacher_contact，住址teacher_address，校区campus，备注others*/
 import { onMounted, ref } from "vue";
-import { Delete, EditPen, Plus, Search } from "@element-plus/icons-vue";
+import { Delete, EditPen, Plus, Search, View } from "@element-plus/icons-vue";
 import { addClassMangage, deleteClassMangage, editClassMangage, searchCampus, searchClassMangage } from "@/api/modules/schedule";
 import ClassListDrawer from "./classListDrawer.vue";
 import { GlobalStore } from "@/stores";
 import { useHandleData } from "@/hooks/useHandleData";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
 const { BUTTONS } = useAuthButtons();
+import { useRouter } from "vue-router";
 
 const globalStore = GlobalStore();
 let tableData = ref([]);
@@ -104,6 +116,13 @@ const searchClassByName = () => {
 	searchClassMangage({ campus: campus.value, class_name: className.value }).then(res => {
 		tableData.value = res.data;
 	});
+};
+
+// 点击详情，跳转路由进入班级详情页，传入参数class_name
+const router = useRouter();
+const detail = params => {
+	let str = params.class_name + "&" + params.campus;
+	router.push(`/class_management/student_management/${str}`);
 };
 </script>
 

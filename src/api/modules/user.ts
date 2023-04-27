@@ -25,6 +25,11 @@ export const editUser = (params: { id: string }) => {
 	return http.post(PORT1 + `/user/edit`, params);
 };
 
+// * 更换用户密码
+export const changeUserPassword = (params: { newPassword: string; oldPassword: string }) => {
+	return http.post(PORT1 + `/changePassword`, params);
+};
+
 // * 删除用户
 export const deleteUser = (params: { id: string[] }) => {
 	return http.post(PORT1 + `/user/delete`, params);

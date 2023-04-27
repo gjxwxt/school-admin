@@ -14,6 +14,8 @@ export const GlobalStore = defineStore({
 		token: "",
 		// userInfo
 		userInfo: "",
+		// username
+		username: "",
 		// element组件大小
 		assemblySize: "default",
 		// language
@@ -55,6 +57,10 @@ export const GlobalStore = defineStore({
 		// setUserInfo
 		setUserInfo(userInfo: any) {
 			this.userInfo = userInfo;
+		},
+		// setUsername
+		setUsername(username: string) {
+			this.username = username;
 		},
 		// setAssemblySizeSize
 		setAssemblySizeSize(assemblySize: AssemblySizeType) {
