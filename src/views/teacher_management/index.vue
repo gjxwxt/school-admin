@@ -30,7 +30,7 @@
 				/>
 			</el-select>
 			<el-button size="large" :icon="Delete" color="#409eff" plain @click="clear()">清空类别</el-button>
-			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">TeacherAdd</el-button>
+			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">添加教师</el-button>
 		</div>
 		<el-table
 			border
@@ -39,13 +39,13 @@
 			style="width: 100%"
 			refs="schedule"
 		>
-			<el-table-column prop="teacher_name" label="teacher_name" width="150" align="center" />
-			<el-table-column prop="teacher_gender" label="teacher_gender" align="center" />
-			<el-table-column prop="teacher_category" label="teacher_category" align="center" />
-			<el-table-column prop="teacher_contact" label="teacher_contact" align="center" />
-			<el-table-column prop="teacher_address" label="teacher_address" align="center" />
-			<el-table-column prop="campus" label="campus" align="center" />
-			<el-table-column prop="others" label="others" align="center" />
+			<el-table-column prop="teacher_name" label="教师姓名" width="150" align="center" />
+			<el-table-column prop="teacher_gender" label="性别" align="center" />
+			<el-table-column prop="teacher_category" label="类别" align="center" />
+			<el-table-column prop="teacher_contact" label="联系方式" align="center" />
+			<el-table-column prop="teacher_address" label="地址" align="center" />
+			<el-table-column prop="campus" label="校区" align="center" />
+			<el-table-column prop="others" label="其他" align="center" />
 			<el-table-column fixed="right" label="操作" width="150" align="center">
 				<template #default="scope">
 					<el-button
@@ -100,7 +100,7 @@ const getCampus = () => {
 	});
 };
 // 教师类别
-let teacher_category = ref(null);
+let teacher_category = ref();
 const teacherChange = () => {
 	searchList();
 };

@@ -12,8 +12,8 @@
 				<el-option v-for="item in campusOptions" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 			<el-input v-model="className" size="large" placeholder="输入班级名" style="width: 180px; margin-right: 12px"></el-input>
-			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchClassByName">Search</el-button>
-			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">ClassAdd</el-button>
+			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchClassByName">搜索</el-button>
+			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">添加班级</el-button>
 		</div>
 		<el-table
 			:data="tableData"
@@ -22,13 +22,13 @@
 			border
 			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
 		>
-			<el-table-column prop="class_name" label="class_name" width="150" align="center" />
+			<el-table-column prop="class_name" label="班级名" width="150" align="center" />
 			<el-table-column prop="teacher1_name" label="中教" align="center" />
 			<el-table-column prop="teacher1_contact" label="中教联系方式" align="center" />
 			<el-table-column prop="teacher2_name" label="外教" align="center" />
 			<el-table-column prop="teacher2_contact" label="外教联系方式" align="center" />
-			<el-table-column prop="campus" label="campus" align="center" />
-			<el-table-column prop="others" label="others" align="center" />
+			<el-table-column prop="campus" label="校区" align="center" />
+			<el-table-column prop="others" label="其他" align="center" />
 			<el-table-column fixed="right" label="班级详情" width="150" align="center">
 				<template #default="scope">
 					<el-button type="primary" link :icon="View" @click="detail(scope.row)">详情</el-button>
@@ -43,9 +43,9 @@
 						:icon="EditPen"
 						size="small"
 						@click="openDrawer('编辑', { ...scope.row })"
-						>Edit</el-button
+						>编辑</el-button
 					>
-					<el-button type="primary" link :icon="Delete" v-if="BUTTONS.delete" @click="deleteAccount(scope.row)">remove</el-button>
+					<el-button type="primary" link :icon="Delete" v-if="BUTTONS.delete" @click="deleteAccount(scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

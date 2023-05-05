@@ -1,5 +1,5 @@
 <template>
-	<div class="card content-box">
+	<div class="card" style=" position: relative;height: 100%">
 		<div style="padding: 5vh 2vw">
 			<el-select
 				v-model="campus"
@@ -12,15 +12,15 @@
 				<el-option v-for="item in campusOptions" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 			<el-input v-model="username" size="large" placeholder="输入用户名" style="width: 180px; margin-right: 12px"></el-input>
-			<el-button size="large" :icon="Search" color="#409eff" round plain @click="searchList()">Search</el-button>
+			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchList()">Search</el-button>
 			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">add</el-button>
 		</div>
 		<el-table :data="tableData" border :header-cell-style="{ background: '#F5F7FA', color: '#000' }">
-			<el-table-column fixed prop="username" label="姓名" width="150" align="center" />
-			<el-table-column prop="phone_number" label="手机号" width="150" align="center" />
-			<el-table-column prop="create_time" label="注册时间" width="150" align="center" />
-			<el-table-column prop="campus" label="所属校区" width="150" align="center" />
-			<el-table-column prop="role" label="角色" width="150" align="center">
+			<el-table-column fixed prop="username" label="姓名" align="center" />
+			<el-table-column prop="phone_number" label="手机号" align="center" />
+			<el-table-column prop="create_time" label="注册时间" align="center" />
+			<el-table-column prop="campus" label="所属校区" align="center" />
+			<el-table-column prop="role" label="角色" align="center">
 				<template #default="scope">
 					<el-tag v-if="scope.row.role === 'admin'" style="color: white" color="#eccc68">管理员</el-tag>
 					<el-tag v-if="scope.row.role === 'operator'" style="color: white" color="#6c5ce7">运营人员</el-tag>
@@ -28,21 +28,31 @@
 					<el-tag v-if="scope.row.role === 'campus_admin'" style="color: white" color="#5352ed">校区管理</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column prop="status" label="账号状态" width="150" align="center">
+			<el-table-column prop="status" label="账号状态" align="center">
 				<template #default="scope">
 					<el-tag :type="scope.row.status === 1 ? 'success' : 'danger'" disable-transitions>{{
 						scope.row.status === 1 ? "正常" : "禁用"
 					}}</el-tag>
 				</template>
 			</el-table-column>
-			<el-table-column fixed="right" label="操作" width="150" align="center">
+			<el-table-column label="操作" align="center">
 				<template #default="scope">
 					<el-button link type="primary" size="small" @click="openDrawer('编辑', { ...scope.row })"> edit </el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 		<!-- 关键在page-size，一页多少条数据；total：一共多少数据 -->
-		<div style="position: absolute; bottom: 50px; z-index: 1000">
+		<div
+			style="
+				position: absolute;
+				bottom: 50px;
+				z-index: 1000;
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				width: 100%;
+			"
+		>
 			<el-pagination
 				background
 				layout="prev, pager, next"

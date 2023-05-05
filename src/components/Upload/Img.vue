@@ -8,6 +8,7 @@
 			:disabled="self_disabled"
 			:show-file-list="false"
 			:http-request="handleHttpUpload"
+			list-type="picture-card"
 			:before-upload="beforeUpload"
 			:on-success="uploadSuccess"
 			:on-error="uploadError"
@@ -119,7 +120,7 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
 	try {
 		const api = props.api ?? uploadImg;
 		const { data } = await api(formData);
-		emit("update:imageUrl", data.fileUrl);
+		emit("update:imageUrl", "https://43.138.17.216/api" + data.fileList[0].fileUrl);
 		// 调用 el-form 内部的校验方法（可自动校验）
 		formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
 		emit("check-validate");

@@ -12,10 +12,16 @@
 				<el-option v-for="item in campusOptions" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 			<el-input v-model="classroom" size="large" placeholder="输入教室名" style="width: 180px; margin-right: 12px"></el-input>
-			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchClassRoomByName">Search</el-button>
-			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">ClassRoom Add</el-button>
+			<el-button size="large" :icon="Search" color="#409eff" plain @click="searchClassRoomByName">搜索</el-button>
+			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">添加新教室</el-button>
 		</div>
-		<el-table :data="tableData" style="width: 100%" refs="schedule">
+		<el-table
+			:data="tableData"
+			style="width: 100%"
+			refs="schedule"
+			border
+			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
+		>
 			<el-table-column prop="classroom" label="教室名" align="center" />
 			<el-table-column fixed="right" label="操作" width="150" align="center">
 				<template #default="scope">

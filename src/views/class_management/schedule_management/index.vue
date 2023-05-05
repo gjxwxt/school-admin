@@ -29,9 +29,9 @@
 				plain
 				@click="openDrawer('新增', { assemblyTime, weeks: DayOfWeek, campus })"
 				style="margin-left: 23px"
-				>add</el-button
+				>新增课程</el-button
 			>
-			<el-button size="large" v-if="BUTTONS.batchAdd" :icon="Plus" color="#409eff" plain @click="useLastWeekSchedule()"
+			<el-button size="large" v-if="BUTTONS.batchAdd" :icon="Plus" color="#409eff" plain @click="openDialog()"
 				>导入上周课表</el-button
 			>
 			<el-button size="large" :icon="Download" plain @click="upload">批量导入课表</el-button>
@@ -86,6 +86,15 @@
 				<li><el-button @click="changDay(0)" type="primary" :plain="DayOfWeek !== 0" size="large">Sun.</el-button></li>
 			</ul>
 		</div>
+		<el-dialog title="提示" v-model="dialogVisible" width="30%">
+			<span>是否导入上周课表，会在当前周已经存在的课表基础上将上周课表插入，请谨慎操作</span>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="dialogVisible = false">取 消</el-button>
+					<el-button type="primary" @click="useLastWeekSchedule()">确 定</el-button>
+				</span>
+			</template>
+		</el-dialog>
 		<UserDrawer ref="drawerRef" @submit="searchList()" />
 		<ImportExcel ref="dialogRef" />
 		<OperateClassHour ref="classHourRef" />
@@ -207,8 +216,13 @@ const searchList = () => {
 	});
 };
 // 导入上周课表
+let dialogVisible = ref(false);
+const openDialog = () => {
+	dialogVisible.value = true;
+};
 const useLastWeekSchedule = async () => {
 	await useLastSchedule({ startDay: startDay.value, endDay: endDay.value, campus: campus.value });
+	dialogVisible.value = false;
 	searchList();
 };
 

@@ -35,3 +35,12 @@ export const classHourOperate = (params: classHour.classHourOperateForm) => {
 export const classHourSearch = (params: classHour.classHourSearchForm) => {
 	return http.post(PORT1 + `/classHour/search`, params);
 };
+
+// * 上传学生id和图片地址到contract表中
+export const uploadContract = (params: { student_id: number; img_url: string }) => {
+	return http.post(PORT1 + `/student/uploadContract`, params);
+};
+// * 根据学生id获取合同图片地址
+export const getContract = (params: { student_id: number }) => {
+	return http.post(PORT1 + `/student/getContract`, params);
+};

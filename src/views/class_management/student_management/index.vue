@@ -1,6 +1,6 @@
 <template>
 	<div class="card content-box">
-		<div style="padding: 2vh 2vw">
+		<div style="padding: 5vh 2vw">
 			<el-select
 				v-model="campus"
 				@change="campusChange"
@@ -42,6 +42,11 @@
 			<el-table-column prop="student_source" label="学生来源" width="150" align="center" />
 			<el-table-column prop="class_hour" label="剩余课时" width="150" align="center" />
 			<el-table-column prop="init_class_hour" label="总课时" width="150" align="center" />
+			<el-table-column label="合同照片" align="center">
+				<template #default="scope">
+					<el-button type="primary" :icon="View" link @click="showContract(scope.row)">查看</el-button>
+				</template>
+			</el-table-column>
 			<el-table-column prop="classes" label="Class No." width="150" align="center">
 				<template #default="scope">
 					<el-button type="primary" :icon="View" link @click="class_hour_detail(scope.row.student_id)">课时操作记录</el-button>
@@ -49,12 +54,13 @@
 			</el-table-column>
 			<el-table-column prop="remarks" label="备注" width="150" align="center" />
 			<el-table-column prop="create_time" label="登记日期" width="150" align="center" />
-			<el-table-column fixed="right" label="操作" width="150" align="center">
+			<el-table-column fixed="right" label="操作" width="200" align="center">
 				<template #default="scope">
 					<el-button link type="primary" :icon="EditPen" size="small" @click="openDrawer('编辑', { campus, ...scope.row })"
-						>Edit</el-button
+						>编辑</el-button
 					>
-					<el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">remove</el-button>
+					<el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
+					<el-button type="primary" link :icon="Upload" @click="uploadContract(scope.row)">上传合同照片</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -70,15 +76,19 @@
 		</div>
 		<UserDrawer ref="drawerRef" @submit="searchList()" />
 		<ClassHourDetail ref="classHourDetailRef" />
+		<UploadFile ref="uploadFileRef" />
+		<ContractImg ref="contractImgRef" />
 	</div>
 </template>
 
 <script setup lang="ts" name="accountManage">
 import { ref, onMounted } from "vue";
-import { Delete, EditPen, Plus, Search, View } from "@element-plus/icons-vue";
+import { Delete, EditPen, Plus, Search, View, Upload } from "@element-plus/icons-vue";
 import { useHandleData } from "@/hooks/useHandleData";
 import UserDrawer from "./studentDrawer.vue";
 import ClassHourDetail from "./class_hour_detail.vue";
+import UploadFile from "./upload_contract_img.vue";
+import ContractImg from "./contract_img.vue";
 import { searchCampus, searchClassMangage } from "@/api/modules/schedule";
 import { GlobalStore } from "@/stores";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
@@ -222,6 +232,24 @@ const clear = () => {
 	class_name.value = "";
 	page.value = 1;
 	searchList();
+};
+
+// 上传合同照片
+const uploadFileRef = ref();
+const uploadContract = ({ student_id }) => {
+	let params = {
+		student_id
+	};
+	uploadFileRef.value.acceptParams(params);
+};
+
+// 展示合同照片
+const contractImgRef = ref();
+const showContract = ({ student_id }) => {
+	let params = {
+		student_id
+	};
+	contractImgRef.value.acceptParams(params);
 };
 </script>
 

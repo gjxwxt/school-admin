@@ -1,14 +1,18 @@
 <template>
 	<div class="card" style="height: 100%">
 		<div style="padding: 5vh 2vw">
-			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')" style="margin-left: 82%"
-				>CampusAdd</el-button
-			>
+			<el-button size="large" :icon="Plus" color="#409eff" plain @click="openDrawer('新增')">新增校区</el-button>
 		</div>
-		<el-table :data="tableData" style="width: 100%" refs="schedule">
-			<el-table-column prop="campus" label="campusName" width="150" align="center" />
-			<el-table-column prop="address" label="address" align="center" />
-			<el-table-column fixed="right" label="操作" width="150" align="center">
+		<el-table
+			:data="tableData"
+			style="width: 100%"
+			refs="schedule"
+			border
+			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
+		>
+			<el-table-column prop="campus" label="校区名" width="150" align="center" />
+			<el-table-column prop="address" label="地址" align="center" />
+			<el-table-column fixed="right" label="操作" width="200" align="center">
 				<template #default="scope">
 					<el-button
 						link
