@@ -21,9 +21,7 @@
 				<el-input type="textarea" v-model="remarks" placeholder="请输入内容" />
 			</el-form-item>
 			<el-form-item>
-				<el-select v-model="operate_num" filterable placeholder="请选择扣除数量">
-					<el-option v-for="item in operate_num_list" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-				</el-select>
+				<el-input v-model="operate_num" placeholder="请输入扣除数量" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -62,7 +60,7 @@ const parameter = ref<Partial<ClassHourParameterProps>>({});
 const acceptParams = (params?: any): void => {
 	parameter.value = params;
 	dialogVisible.value = true;
-	params.searchApi!({ class_id: params.params }).then((res: any) => {
+	params.searchApi!({ class_name: params.params }).then((res: any) => {
 		studentList.value = res.data;
 	});
 };
@@ -78,20 +76,6 @@ const handleSelectionChange = (val: any): void => {
 
 // 选择扣除数量
 let operate_num = ref(1);
-const operate_num_list = [
-	{
-		value: 1,
-		label: "1"
-	},
-	{
-		value: 1.5,
-		label: "1.5"
-	},
-	{
-		value: 2,
-		label: "2"
-	}
-];
 
 // 点击确定，首先判断是否有选择学生，然后判断是否有选择扣除数量，然后判断是否有备注
 const submit = () => {

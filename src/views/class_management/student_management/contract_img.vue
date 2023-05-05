@@ -1,6 +1,6 @@
 <template>
 	<el-dialog v-model="dialogVisible" title="合同详情" :destroy-on-close="true" width="450px" draggable>
-		<div style=" display: flex; flex-direction: row; justify-content: center;width: 100%">
+		<div style="display: flex; flex-direction: row; justify-content: center; width: 100%">
 			<el-image style="width: 400px; height: 400px" :src="imgUrl" :preview-src-list="[imgUrl]"> </el-image>
 		</div>
 		<template #footer>

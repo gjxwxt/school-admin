@@ -124,7 +124,7 @@ import { ElMessageBox } from "element-plus";
 import { useDownload } from "@/hooks/useDownload";
 import { uploadExcel } from "@/api/modules/upload";
 import { useRouter } from "vue-router";
-import { classHourOperate, getStudentListByClassId } from "@/api/modules/student";
+import { classHourOperate, getStudentByClassName } from "@/api/modules/student";
 const { BUTTONS } = useAuthButtons();
 
 const globalStore = GlobalStore();
@@ -264,8 +264,8 @@ const classHourRef = ref();
 const classHour = async data => {
 	let param = {
 		title: "扣课时",
-		params: data.class_id, // 父组件传过来的参数
-		searchApi: getStudentListByClassId, // 查询数据的api
+		params: data.classes, // 父组件传过来的参数
+		searchApi: getStudentByClassName, // 查询数据的api
 		submitApi: classHourOperate // 点击确定上传的api
 	};
 	classHourRef.value.acceptParams(param);

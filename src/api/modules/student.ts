@@ -22,8 +22,8 @@ export const getStudentList = (params: Student.searchStudentForm) => {
 	return http.post(PORT1 + `/student/search`, params);
 };
 
-export const getStudentListByClassId = (params: { class_id: number }) => {
-	return http.post(PORT1 + `/student/getStudentByClassId`, params);
+export const getStudentByClassName = (params: { class_name: string }) => {
+	return http.post(PORT1 + `/student/getStudentByClassName`, params);
 };
 
 // * 课时操作 /classHour/operate
