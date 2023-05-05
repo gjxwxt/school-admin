@@ -23,6 +23,12 @@
 			<el-form-item>
 				<el-input v-model="operate_num" placeholder="请输入扣除数量" />
 			</el-form-item>
+			<el-form-item label="操作类型" v-if="parameter.title !== '扣课时'">
+				<el-select v-model="operate_type" placeholder="请选择操作类型">
+					<el-option label="扣课时" value="1" />
+					<el-option label="加课时" value="2" />
+				</el-select>
+			</el-form-item>
 		</el-form>
 		<template #footer>
 			<span class="dialog-footer">
@@ -56,11 +62,14 @@ const dialogVisible = ref(false);
 // 父组件传过来的参数
 const parameter = ref<Partial<ClassHourParameterProps>>({});
 
+// 操作类型选择 1为扣课时，其他为加课时
+let operate_type = ref("1");
+
 // 接收父组件参数
 const acceptParams = (params?: any): void => {
 	parameter.value = params;
 	dialogVisible.value = true;
-	params.searchApi!({ class_name: params.params }).then((res: any) => {
+	params.searchApi!({ ...params.params }).then((res: any) => {
 		studentList.value = res.data;
 	});
 };
@@ -105,7 +114,7 @@ const submit = () => {
 	}
 	selectUser.forEach((item: any) => {
 		item.remarks = remarks.value;
-		item.type = parameter.value.title === "扣课时" ? 1 : 2; // 1为扣课时，2为添加课时
+		item.type = parameter.value.title !== "扣课时" ? (operate_type.value == "1" ? 1 : 2) : 1;
 		item.operate_num = operate_num.value;
 		item.operator = username;
 		item.before_class_hour = item.class_hour;

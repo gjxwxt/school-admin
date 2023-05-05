@@ -264,7 +264,7 @@ const classHourRef = ref();
 const classHour = async data => {
 	let param = {
 		title: "扣课时",
-		params: data.classes, // 父组件传过来的参数
+		params: { class_name: data.classes, campus: data.campus }, // 父组件传过来的参数
 		searchApi: getStudentByClassName, // 查询数据的api
 		submitApi: classHourOperate // 点击确定上传的api
 	};

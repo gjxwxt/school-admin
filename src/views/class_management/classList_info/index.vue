@@ -34,7 +34,7 @@
 					<el-button type="primary" link :icon="View" @click="detail(scope.row)">详情</el-button>
 				</template>
 			</el-table-column>
-			<el-table-column fixed="right" label="操作" width="150" align="center">
+			<el-table-column fixed="right" label="操作" width="200" align="center">
 				<template #default="scope">
 					<el-button
 						link
@@ -45,11 +45,13 @@
 						@click="openDrawer('编辑', { ...scope.row })"
 						>编辑</el-button
 					>
+					<el-button type="primary" link :icon="View" v-if="BUTTONS.operate" @click="classHour(scope.row)">课时操作</el-button>
 					<el-button type="primary" link :icon="Delete" v-if="BUTTONS.delete" @click="deleteAccount(scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 		<ClassListDrawer ref="drawerRef" @submit="searchList()" />
+		<OperateClassHour ref="classHourRef" />
 	</div>
 </template>
 <script setup lang="ts">
@@ -59,11 +61,13 @@ import { onMounted, ref } from "vue";
 import { Delete, EditPen, Plus, Search, View } from "@element-plus/icons-vue";
 import { addClassMangage, deleteClassMangage, editClassMangage, searchCampus, searchClassMangage } from "@/api/modules/schedule";
 import ClassListDrawer from "./classListDrawer.vue";
+import OperateClassHour from "@/components/DeductClassHour/index.vue";
 import { GlobalStore } from "@/stores";
 import { useHandleData } from "@/hooks/useHandleData";
 import { useAuthButtons } from "@/hooks/useAuthButtons";
 const { BUTTONS } = useAuthButtons();
 import { useRouter } from "vue-router";
+import { classHourOperate, getStudentByClassName } from "@/api/modules/student";
 
 const globalStore = GlobalStore();
 let tableData = ref([]);
@@ -123,6 +127,18 @@ const router = useRouter();
 const detail = params => {
 	let str = params.class_name + "&" + params.campus;
 	router.push(`/class_management/student_management/${str}`);
+};
+
+// 课时操作
+const classHourRef = ref();
+const classHour = async data => {
+	let param = {
+		title: "课时操作",
+		params: { class_name: data.class_name, campus: data.campus }, // 父组件传过来的参数
+		searchApi: getStudentByClassName, // 查询数据的api
+		submitApi: classHourOperate // 点击确定上传的api
+	};
+	classHourRef.value.acceptParams(param);
 };
 </script>
 
