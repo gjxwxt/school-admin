@@ -1,5 +1,5 @@
 <template>
-	<div class="card" style=" position: relative;height: 100%">
+	<div class="card" style="position: relative; height: 100%">
 		<div style="padding: 5vh 2vw">
 			<el-select
 				v-model="campus"

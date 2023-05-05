@@ -115,9 +115,9 @@ const submit = () => {
 	selectUser.forEach((item: any) => {
 		item.remarks = remarks.value;
 		item.type = parameter.value.title !== "扣课时" ? (operate_type.value == "1" ? 1 : 2) : 1;
-		item.operate_num = operate_num.value;
+		item.operate_num = Number(operate_num.value) || 0;
 		item.operator = username;
-		item.before_class_hour = item.class_hour;
+		item.before_class_hour = Number(item.class_hour);
 	});
 	// console.log(selectUser);
 	// 点击确定，上传数据
@@ -129,6 +129,7 @@ const submit = () => {
 				type: "success"
 			});
 			dialogVisible.value = false;
+			selectUser = [];
 		} else {
 			ElNotification({
 				title: "温馨提示",
