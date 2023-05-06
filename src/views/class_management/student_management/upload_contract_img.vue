@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts" name="UserDrawer">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import UploadImg from "@/components/Upload/Img.vue";
 import { ElNotification } from "element-plus";
 import { uploadContract } from "@/api/modules/student";
@@ -78,7 +78,14 @@ const submitForm = (): void => {
 		}
 	});
 };
-
+watch(
+	() => drawerVisible.value,
+	val => {
+		if (!val) {
+			fromModel.value.contract_img = "";
+		}
+	}
+);
 defineExpose({
 	acceptParams
 });

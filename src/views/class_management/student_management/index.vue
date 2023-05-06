@@ -31,7 +31,7 @@
 		<el-table
 			border
 			:data="tableData"
-			style="width: 100%"
+			style="width: 100%; margin-bottom: 40px"
 			refs="schedule"
 			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
 		>

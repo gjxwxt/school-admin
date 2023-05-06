@@ -17,7 +17,7 @@
 		</div>
 		<el-table
 			:data="tableData"
-			style="width: 100%"
+			style="width: 100%; max-height: 400px; margin-bottom: 20px; overflow-x: hidden; overflow-y: auto"
 			refs="schedule"
 			border
 			:header-cell-style="{ background: '#F5F7FA', color: '#000' }"
@@ -95,7 +95,7 @@ const getCampus = () => {
 // 删除某一行
 const deleteAccount = async params => {
 	await useHandleData(deleteClassRoom, { id: [params.id] }, `删除当前教室`);
-	getCampus();
+	searchList();
 };
 // 侧边栏
 const drawerRef = ref();

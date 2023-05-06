@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts" name="OperateClassHour">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { getContract } from "@/api/modules/student";
 
 interface ClassHourParameterProps {
@@ -38,8 +38,16 @@ const acceptParams = (params?: any): void => {
 // 点击确定，首先判断是否有选择学生，然后判断是否有选择扣除数量，然后判断是否有备注
 const submit = () => {
 	dialogVisible.value = false;
-	imgUrl.value = "";
 };
+
+watch(
+	() => dialogVisible.value,
+	val => {
+		if (!val) {
+			imgUrl.value = "";
+		}
+	}
+);
 
 defineExpose({
 	acceptParams

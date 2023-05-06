@@ -3,7 +3,7 @@
 	<el-dialog v-model="dialogVisible" :title="`批量${parameter.title}`" :destroy-on-close="true" width="580px" draggable>
 		<el-table
 			:data="studentList"
-			style="width: 100%; margin-bottom: 20px"
+			style="width: 100%; max-height: 300px; margin-bottom: 20px; overflow-x: hidden; overflow-y: auto"
 			border
 			ref="tableSelect"
 			@selection-change="handleSelectionChange"
