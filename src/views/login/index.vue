@@ -12,6 +12,10 @@
 				</div>
 				<LoginForm />
 			</div>
+			<!--	添加备案号		-->
+			<div class="login-footer">
+				<a class="el-link" href="https://beian.miit.gov.cn" target="_blank">鲁ICP备2023014363号</a>
+			</div>
 		</div>
 	</div>
 </template>

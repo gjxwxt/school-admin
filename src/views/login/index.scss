@@ -72,7 +72,15 @@
 		}
 	}
 }
-
+.login-footer {
+	// 备案号样式
+	position: absolute;
+	bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100vw;
+}
 @media screen and (max-width: 1250px) {
 	.login-left {
 		display: none;

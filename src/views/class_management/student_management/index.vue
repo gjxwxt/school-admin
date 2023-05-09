@@ -49,7 +49,9 @@
 			</el-table-column>
 			<el-table-column prop="classes" label="Class No." width="150" align="center">
 				<template #default="scope">
-					<el-button type="primary" :icon="View" link @click="class_hour_detail(scope.row.student_id)">课时操作记录</el-button>
+					<el-button type="primary" :icon="View" link v-if="BUTTONS.operation" @click="class_hour_detail(scope.row.student_id)"
+						>课时操作记录</el-button
+					>
 				</template>
 			</el-table-column>
 			<el-table-column prop="remarks" label="备注" width="150" align="center" />
@@ -59,7 +61,7 @@
 					<el-button link type="primary" :icon="EditPen" size="small" @click="openDrawer('编辑', { campus, ...scope.row })"
 						>编辑</el-button
 					>
-					<el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
+					<el-button type="primary" link :icon="Delete" v-if="BUTTONS.delete" @click="deleteAccount(scope.row)">删除</el-button>
 					<el-button type="primary" link :icon="Upload" @click="uploadContract(scope.row)">上传合同照片</el-button>
 				</template>
 			</el-table-column>
